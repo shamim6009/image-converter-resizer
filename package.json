@@ -1,0 +1,43 @@
+{
+  "name": "image-converter-photo-resizer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "All-in-one browser-based image converter, photo resizer, compressor and bulk export tool.",
+  "keywords": [
+    "image-converter",
+    "photo-resizer",
+    "bulk-image-resizer",
+    "image-compression",
+    "webp",
+    "avif",
+    "react",
+    "vite"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@jsquash/avif": "^2.1.1",
+    "heic2any": "^0.0.4",
+    "jszip": "^3.10.1",
+    "lucide-react": "^0.468.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "utif": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.7.0",
+    "typescript": "^5.7.3",
+    "vite": "^6.4.4",
+    "vitest": "^3.2.7"
+  }
+}

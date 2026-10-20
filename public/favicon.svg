@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Image Converter and Photo Resizer logo">
+  <defs>
+    <linearGradient id="g" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4F46E5"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#g)"/>
+  <rect x="14" y="17" width="27" height="27" rx="5" fill="none" stroke="#fff" stroke-width="3" opacity=".55"/>
+  <rect x="23" y="24" width="27" height="27" rx="5" fill="#fff"/>
+  <circle cx="33" cy="33" r="3.2" fill="#7C3AED"/>
+  <path d="M25.5 47.5l8.5-9 6 6.2 4.5-4 7 6.8" fill="none" stroke="#4F46E5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

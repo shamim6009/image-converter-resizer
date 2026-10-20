@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Image Converter and Photo Resizer">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EEF2FF"/>
+      <stop offset=".55" stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#F5F3FF"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#4F46E5"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1030" cy="90" r="190" fill="#E0E7FF" opacity=".65"/>
+  <circle cx="130" cy="560" r="220" fill="#EDE9FE" opacity=".7"/>
+  <rect x="92" y="88" width="76" height="76" rx="20" fill="url(#brand)"/>
+  <path d="M112 126l12-13 11 11 6-6 10 12" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="139" cy="112" r="5" fill="#fff"/>
+  <text x="190" y="128" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" fill="#111827">Image Converter &amp; Photo Resizer</text>
+  <text x="92" y="268" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="58" font-weight="800" fill="#111827">Convert, resize &amp; compress</text>
+  <text x="92" y="338" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="58" font-weight="800" fill="#4F46E5">images without uploads.</text>
+  <text x="94" y="402" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="25" fill="#475569">JPG · PNG · WebP · AVIF · HEIC · TIFF · GIF · BMP · SVG · ICO</text>
+  <g font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="600" fill="#312E81">
+    <rect x="92" y="458" width="184" height="54" rx="27" fill="#E0E7FF"/>
+    <text x="121" y="492">100% private</text>
+    <rect x="290" y="458" width="214" height="54" rx="27" fill="#E0E7FF"/>
+    <text x="319" y="492">Bulk processing</text>
+    <rect x="518" y="458" width="198" height="54" rx="27" fill="#E0E7FF"/>
+    <text x="547" y="492">ZIP download</text>
+  </g>
+  <g transform="translate(822 150)">
+    <rect width="286" height="330" rx="26" fill="#fff" stroke="#E5E7EB" stroke-width="2"/>
+    <rect x="24" y="24" width="238" height="174" rx="16" fill="#EEF2FF"/>
+    <path d="M60 170l58-61 40 41 28-25 44 45z" fill="#C7D2FE"/>
+    <circle cx="92" cy="78" r="19" fill="#818CF8"/>
+    <rect x="24" y="222" width="146" height="14" rx="7" fill="#E2E8F0"/>
+    <rect x="24" y="248" width="204" height="12" rx="6" fill="#EEF2FF"/>
+    <rect x="24" y="280" width="238" height="36" rx="18" fill="url(#brand)"/>
+    <text x="95" y="304" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" fill="#fff">Download</text>
+  </g>
+</svg>

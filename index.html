@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Converter &amp; Photo Resizer Online — Free Bulk Convert, Resize &amp; Compress</title>
+    <meta
+      name="description"
+      content="Free online image converter and photo resizer. Convert JPG, PNG, WebP, AVIF, HEIC and TIFF, resize images, compress files and download all results as a ZIP. 100% private, browser-based processing."
+    />
+    <meta
+      name="keywords"
+      content="online image converter, photo resizer, bulk image resizer, JPG to PNG converter, PNG to JPG converter, WebP converter, resize image online, image compression tool"
+    />
+    <meta name="theme-color" content="#4f46e5" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./favicon.svg" />
+    <link rel="manifest" href="./site.webmanifest" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Image Converter &amp; Photo Resizer Online" />
+    <meta
+      property="og:description"
+      content="Convert, resize, compress and batch-download images entirely in your browser. No uploads, no sign-up, no watermarks."
+    />
+    <meta property="og:image" content="./og-card.svg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Image Converter &amp; Photo Resizer Online" />
+    <meta
+      name="twitter:description"
+      content="A fast, private, all-in-one image converter, resizer and compressor that runs locally in your browser."
+    />
+    <meta name="twitter:image" content="./og-card.svg" />
+
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('ic-theme');
+          var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.dataset.theme = theme;
+        } catch (error) {
+          document.documentElement.dataset.theme = 'light';
+        }
+      })();
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Image Converter & Photo Resizer",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any",
+        "description": "A free browser-based image converter, bulk photo resizer and compressor with private local processing.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "featureList": [
+          "Image format conversion",
+          "Photo resizing with aspect ratio controls",
+          "Bulk image processing",
+          "Image compression",
+          "ZIP downloads"
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <div style="padding: 2rem; font-family: system-ui, sans-serif">
+        JavaScript is required to convert and resize images locally in your browser.
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
