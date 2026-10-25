@@ -59,7 +59,7 @@ export function Footer({ onNavigate }: FooterProps) {
       <div className="footer-bottom">
         <span>© {new Date().getFullYear()} Image Converter &amp; Photo Resizer. All rights reserved.</span>
         <span className="footer-made">
-          Built with React, Vite and the Canvas API <Heart size={13} aria-hidden="true" />
+          Built with React, Vite and the Canvas API. Developed by Shamim Ahmed. <Heart size={13} aria-hidden="true" />
         </span>
         <span className="footer-meta">
           <Github size={14} aria-hidden="true" />
