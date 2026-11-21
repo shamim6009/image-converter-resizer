@@ -15,7 +15,7 @@ export type OutputFormatId = 'jpeg' | 'png' | 'webp' | 'avif' | 'bmp' | 'ico';
 export type ResizeMode = 'original' | 'auto' | 'custom' | 'percentage';
 export type AutoResizeBy = 'width' | 'height' | 'longest' | 'max';
 export type FitMode = 'contain' | 'cover' | 'stretch' | 'fit-within';
-export type WorkflowTab = 'convert' | 'resize' | 'bulk' | 'compress';
+export type WorkflowTab = 'convert' | 'resize' | 'bulk' | 'compress' | 'background';
 export type ImageStatus = 'ready' | 'processing' | 'completed' | 'failed' | 'canceled';
 
 export interface InputFormatInfo {
@@ -55,6 +55,7 @@ export interface SourceAsset {
   size: number;
   thumbnailUrl: string;
   frameNotice?: string;
+  backgroundRemoved?: boolean;
   importedAt: number;
 }
 
@@ -120,6 +121,15 @@ export interface BatchProgress {
   succeeded: number;
   failed: number;
   canceled: boolean;
+}
+
+export interface BackgroundJob {
+  running: boolean;
+  done: number;
+  total: number;
+  currentName: string;
+  stage: 'model' | 'processing';
+  percent: number;
 }
 
 export interface ZipProgress {

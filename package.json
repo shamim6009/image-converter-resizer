@@ -24,7 +24,9 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@imgly/background-removal": "^1.7.0",
     "@jsquash/avif": "^2.1.1",
+    "fabric": "^6.9.1",
     "heic2any": "^0.0.4",
     "jszip": "^3.10.1",
     "lucide-react": "^0.468.0",

@@ -79,6 +79,7 @@ const SECTION_ORDER: Record<WorkflowTab, Record<'format' | 'resize' | 'quality' 
   resize: { resize: 1, format: 2, quality: 3, background: 4 },
   bulk: { format: 1, resize: 2, quality: 3, background: 4 },
   compress: { quality: 1, format: 2, resize: 3, background: 4 },
+  background: { background: 1, format: 2, resize: 3, quality: 4 },
 };
 
 export function SettingsPanel({

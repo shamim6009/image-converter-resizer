@@ -21,6 +21,8 @@ interface ImageGridProps {
   onToggleSelected: (id: string) => void;
   onRemove: (id: string) => void;
   onDownload: (result: ProcessedResult) => void;
+  onRemoveBackground: (id: string) => void;
+  onEdit: (id: string) => void;
   onSelectAll: () => void;
   onSelectNone: () => void;
 }
@@ -39,6 +41,8 @@ export function ImageGrid({
   onToggleSelected,
   onRemove,
   onDownload,
+  onRemoveBackground,
+  onEdit,
   onSelectAll,
   onSelectNone,
 }: ImageGridProps) {
@@ -85,6 +89,8 @@ export function ImageGrid({
             onToggleSelected={() => onToggleSelected(source.id)}
             onRemove={() => onRemove(source.id)}
             onDownload={onDownload}
+            onRemoveBackground={() => onRemoveBackground(source.id)}
+            onEdit={() => onEdit(source.id)}
           />
         ))}
       </div>

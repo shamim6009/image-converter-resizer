@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import {
+  Brush,
+  Eraser,
   Gauge,
   Images,
   Layers3,
@@ -17,18 +19,28 @@ import type { Theme } from '../hooks/useTheme';
 interface HeaderProps {
   activeTab: WorkflowTab;
   onNavigate: (tab: WorkflowTab) => void;
+  editorOpen: boolean;
+  onOpenEditor: () => void;
   theme: Theme;
   onToggleTheme: () => void;
 }
 
 const NAV_ITEMS: Array<{ id: WorkflowTab; label: string; icon: typeof Images }> = [
-  { id: 'convert', label: 'Image Converter', icon: Images },
-  { id: 'resize', label: 'Photo Resizer', icon: Scaling },
+  { id: 'convert', label: 'Converter', icon: Images },
+  { id: 'resize', label: 'Resizer', icon: Scaling },
   { id: 'bulk', label: 'Bulk Tools', icon: Layers3 },
   { id: 'compress', label: 'Compression', icon: Gauge },
+  { id: 'background', label: 'BG Remover', icon: Eraser },
 ];
 
-export function Header({ activeTab, onNavigate, theme, onToggleTheme }: HeaderProps) {
+export function Header({
+  activeTab,
+  onNavigate,
+  editorOpen,
+  onOpenEditor,
+  theme,
+  onToggleTheme,
+}: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navigate = (tab: WorkflowTab) => {
@@ -56,8 +68,8 @@ export function Header({ activeTab, onNavigate, theme, onToggleTheme }: HeaderPr
               <button
                 key={item.id}
                 type="button"
-                className={`nav-link ${activeTab === item.id ? 'is-active' : ''}`}
-                aria-current={activeTab === item.id ? 'page' : undefined}
+                className={`nav-link ${!editorOpen && activeTab === item.id ? 'is-active' : ''}`}
+                aria-current={!editorOpen && activeTab === item.id ? 'page' : undefined}
                 onClick={() => navigate(item.id)}
               >
                 <Icon size={16} aria-hidden="true" />
@@ -65,6 +77,18 @@ export function Header({ activeTab, onNavigate, theme, onToggleTheme }: HeaderPr
               </button>
             );
           })}
+          <button
+            type="button"
+            className={`nav-link nav-link-editor ${editorOpen ? 'is-active' : ''}`}
+            aria-current={editorOpen ? 'page' : undefined}
+            onClick={() => {
+              setMenuOpen(false);
+              onOpenEditor();
+            }}
+          >
+            <Brush size={16} aria-hidden="true" />
+            Photo Editor
+          </button>
         </nav>
 
         <div className="header-actions">
@@ -102,7 +126,7 @@ export function Header({ activeTab, onNavigate, theme, onToggleTheme }: HeaderPr
               <button
                 key={item.id}
                 type="button"
-                className={`mobile-nav-link ${activeTab === item.id ? 'is-active' : ''}`}
+                className={`mobile-nav-link ${!editorOpen && activeTab === item.id ? 'is-active' : ''}`}
                 onClick={() => navigate(item.id)}
               >
                 <Icon size={18} aria-hidden="true" />
@@ -110,6 +134,17 @@ export function Header({ activeTab, onNavigate, theme, onToggleTheme }: HeaderPr
               </button>
             );
           })}
+          <button
+            type="button"
+            className={`mobile-nav-link ${editorOpen ? 'is-active' : ''}`}
+            onClick={() => {
+              setMenuOpen(false);
+              onOpenEditor();
+            }}
+          >
+            <Brush size={18} aria-hidden="true" />
+            Photo Editor
+          </button>
           <div className="mobile-privacy">
             <ShieldCheck size={16} aria-hidden="true" />
             Your images never leave this device.

@@ -1,4 +1,4 @@
-import { Gauge, Images, Layers3, LockKeyhole, Scaling, ShieldCheck, Sparkles, Zap } from 'lucide-react';
+import { Eraser, Gauge, Images, Layers3, LockKeyhole, Scaling, ShieldCheck, Sparkles, Zap } from 'lucide-react';
 import type { WorkflowTab } from '../types/image';
 
 interface HeroProps {
@@ -11,6 +11,7 @@ const TAB_META: Record<WorkflowTab, { label: string; icon: typeof Images }> = {
   resize: { label: 'Resize', icon: Scaling },
   bulk: { label: 'Bulk studio', icon: Layers3 },
   compress: { label: 'Compress', icon: Gauge },
+  background: { label: 'Remove BG', icon: Eraser },
 };
 
 const COPY: Record<WorkflowTab, { eyebrow: string; description: string }> = {
@@ -33,6 +34,11 @@ const COPY: Record<WorkflowTab, { eyebrow: string; description: string }> = {
     eyebrow: 'Image compression',
     description:
       'Fine-tune quality for JPEG, WebP and AVIF and see the actual byte-size difference before you download.',
+  },
+  background: {
+    eyebrow: 'AI background remover',
+    description:
+      'Cut out people, products and objects in one click. The AI model runs in your browser, so photos stay on your device.',
   },
 };
 

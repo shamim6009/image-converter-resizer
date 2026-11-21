@@ -21,6 +21,14 @@ GitHub Pages.
 - **Bulk processing** with a shared settings panel, per-image statuses, a
   cancellable job queue and a ZIP download that processes missing outputs first.
 - **Live encoded preview** plus a before/after comparison slider.
+- **Background remover**: one-click AI cut-outs that run in the browser
+  (`@imgly/background-removal`). The model is downloaded from the library's CDN
+  on first use; the photo itself is never uploaded.
+- **Photo editor** (`#/editor`): crop, rotate, flip, resize, adjustments and
+  filters, text, shapes, stickers, free drawing, image layers, borders,
+  undo/redo and PNG/JPG/WebP export, built on Fabric.js.
+- **Drag and drop anywhere** on the page; uploaded images appear as thumbnails
+  in the upload box, each with a remove button.
 - **Privacy first**: no backend, no trackers, no accounts. Images never leave the
   device and file content is never written to localStorage.
 - **Dark mode** with a no-flash theme bootstrap and responsive, accessible UI.
@@ -95,6 +103,12 @@ without extra configuration.
   rasterized.
 - Files must stay under 75 MB and images under 100 megapixels for safe local
   processing.
+
+- The background remover needs an internet connection the first time, to fetch
+  its AI model (about 40 MB), and is slower on browsers without WebAssembly SIMD.
+- The photo editor scales imported photos down to 4096 px on the longest side.
+- `@imgly/background-removal` is licensed under AGPL-3.0; review its terms
+  before reusing this project commercially or as closed source.
 
 ## License
 

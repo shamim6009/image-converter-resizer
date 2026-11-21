@@ -3,6 +3,7 @@ import type { WorkflowTab } from '../types/image';
 
 interface FooterProps {
   onNavigate: (tab: WorkflowTab) => void;
+  onOpenEditor: () => void;
 }
 
 const TOOL_LINKS: Array<{ id: WorkflowTab; label: string }> = [
@@ -10,17 +11,18 @@ const TOOL_LINKS: Array<{ id: WorkflowTab; label: string }> = [
   { id: 'resize', label: 'Photo Resizer' },
   { id: 'bulk', label: 'Bulk Tools' },
   { id: 'compress', label: 'Image Compression' },
+  { id: 'background', label: 'Background Remover' },
 ];
 
-export function Footer({ onNavigate }: FooterProps) {
+export function Footer({ onNavigate, onOpenEditor }: FooterProps) {
   return (
     <footer className="site-footer">
       <div className="footer-inner">
         <div className="footer-brand">
           <h2>Image Converter &amp; Photo Resizer</h2>
           <p>
-            A free, privacy-first image toolkit that runs entirely in your browser. Convert, resize, compress
-            and batch-export without accounts, uploads or watermarks.
+            A free, privacy-first image toolkit that runs entirely in your browser. Convert, resize, compress,
+            remove backgrounds, edit and batch-export without accounts, uploads or watermarks.
           </p>
           <span className="footer-privacy">
             <LockKeyhole size={15} aria-hidden="true" />
@@ -35,6 +37,9 @@ export function Footer({ onNavigate }: FooterProps) {
               {link.label}
             </button>
           ))}
+          <button type="button" className="footer-link" onClick={onOpenEditor}>
+            Photo Editor
+          </button>
         </nav>
 
         <div className="footer-column">

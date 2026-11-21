@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import {
   AlertCircle,
   Check,
+  Brush,
   Download,
+  Eraser,
   Eye,
   ImageOff,
   Loader2,
@@ -29,6 +31,8 @@ interface ImageCardProps {
   onToggleSelected: () => void;
   onRemove: () => void;
   onDownload: (result: ProcessedResult) => void;
+  onRemoveBackground: () => void;
+  onEdit: () => void;
 }
 
 const STATUS_LABELS: Record<ImageStatus, string> = {
@@ -52,6 +56,8 @@ export function ImageCard({
   onToggleSelected,
   onRemove,
   onDownload,
+  onRemoveBackground,
+  onEdit,
 }: ImageCardProps) {
   const [thumbnailFailed, setThumbnailFailed] = useState(false);
   const previewUrl = result?.previewUrl ?? source.thumbnailUrl;
@@ -106,6 +112,7 @@ export function ImageCard({
               <Loader2 className="spin" size={22} aria-hidden="true" />
             </span>
           ) : null}
+          {source.backgroundRemoved ? <span className="bg-removed-marker">BG removed</span> : null}
           {active ? (
             <span className="active-marker">
               <Eye size={13} aria-hidden="true" />
@@ -173,6 +180,25 @@ export function ImageCard({
         >
           <Download size={15} aria-hidden="true" />
           <span>Download</span>
+        </button>
+        <button
+          type="button"
+          className="card-action tool"
+          onClick={onRemoveBackground}
+          disabled={locked || source.backgroundRemoved}
+          aria-label={`Remove background from ${source.name}`}
+          title={source.backgroundRemoved ? 'Background already removed' : 'Remove background'}
+        >
+          <Eraser size={15} aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          className="card-action tool"
+          onClick={onEdit}
+          aria-label={`Open ${source.name} in the photo editor`}
+          title="Open in photo editor"
+        >
+          <Brush size={15} aria-hidden="true" />
         </button>
         <button
           type="button"

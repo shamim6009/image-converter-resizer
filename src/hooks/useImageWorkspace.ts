@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type {
+  BackgroundJob,
   BatchProgress,
   FormatCapabilities,
   ImageStatus,
@@ -12,6 +13,7 @@ import type {
 } from '../types/image';
 import type { ToastType } from './useToasts';
 import { detectFormatCapabilities } from '../lib/capabilities';
+import { removeBackgroundFromFile } from '../lib/backgroundRemoval';
 import { analyzeImageFile } from '../lib/decoder';
 import { downloadBlob, triggerDownload } from '../lib/download';
 import { ImageProcessingError, toUserMessage } from '../lib/errors';
@@ -19,6 +21,7 @@ import {
   MAX_FILE_SIZE,
   MAX_FILES,
   formatBytes,
+  getOutputFormat,
   outputFormatsFor,
   recommendedFormatForInput,
   sanitizeBaseName,
@@ -81,6 +84,15 @@ const EMPTY_BATCH: BatchProgress = {
   canceled: false,
 };
 
+const EMPTY_BACKGROUND_JOB: BackgroundJob = {
+  running: false,
+  done: 0,
+  total: 0,
+  currentName: '',
+  stage: 'processing',
+  percent: 0,
+};
+
 const EMPTY_ZIP: ZipProgress = {
   running: false,
   percent: 0,
@@ -107,6 +119,9 @@ export function useImageWorkspace(notify: Notify) {
   const [capabilitiesReady, setCapabilitiesReady] = useState(false);
   const [batch, setBatch] = useState<BatchProgress>(EMPTY_BATCH);
   const [zip, setZip] = useState<ZipProgress>(EMPTY_ZIP);
+  const [backgroundJob, setBackgroundJob] = useState<BackgroundJob>(EMPTY_BACKGROUND_JOB);
+  const backgroundRunningRef = useRef(false);
+  const backgroundCancelRef = useRef(false);
 
   const sourcesRef = useRef<SourceAsset[]>([]);
   const settingsRef = useRef<ProcessSettings>(DEFAULT_SETTINGS);
@@ -839,6 +854,139 @@ export function useImageWorkspace(notify: Notify) {
     }
   }, [batch.running, notify, processMany, zip.running]);
 
+  const removeBackgrounds = useCallback(
+    async (ids: string[]) => {
+      if (backgroundRunningRef.current || batch.running || zip.running) return;
+      const targets = Array.from(new Set(ids))
+        .map((id) => sourcesRef.current.find((source) => source.id === id))
+        .filter((source): source is SourceAsset => Boolean(source) && !source?.backgroundRemoved);
+
+      if (targets.length === 0) {
+        notify('Choose an image that still has its background.', 'info');
+        return;
+      }
+
+      backgroundRunningRef.current = true;
+      backgroundCancelRef.current = false;
+      cancelAutoTimer();
+      generationRef.current += 1;
+      markOrphanedProcessingReady(new Set());
+
+      let done = 0;
+      let succeeded = 0;
+      let failed = 0;
+
+      try {
+        for (const target of targets) {
+          if (backgroundCancelRef.current || !mountedRef.current) break;
+          if (!sourceExists(target.id)) {
+            done += 1;
+            continue;
+          }
+
+          setBackgroundJob({
+            running: true,
+            done,
+            total: targets.length,
+            currentName: target.name,
+            stage: 'processing',
+            percent: 0,
+          });
+          removeResult(target.id);
+          setError(target.id, null);
+          setStatus(target.id, 'processing');
+
+          try {
+            const cutout = await removeBackgroundFromFile(target.file, (stage, percent) => {
+              setBackgroundJob((current) =>
+                current.running ? { ...current, stage, percent } : current,
+              );
+            });
+            const file = new File([cutout], `${target.baseName}-no-bg.png`, {
+              type: 'image/png',
+              lastModified: Date.now(),
+            });
+            const analyzed = await analyzeImageFile(file);
+            if (!mountedRef.current) return;
+            if (!sourceExists(target.id)) continue;
+
+            const current = sourcesRef.current.find((source) => source.id === target.id) ?? target;
+            URL.revokeObjectURL(current.thumbnailUrl);
+            seenFingerprintsRef.current.delete(fingerprint(current.file));
+            seenFingerprintsRef.current.add(fingerprint(file));
+
+            const updated: SourceAsset = {
+              ...current,
+              file,
+              name: file.name,
+              baseName: sanitizeBaseName(file.name),
+              format: analyzed.format,
+              width: analyzed.width,
+              height: analyzed.height,
+              size: file.size,
+              thumbnailUrl: URL.createObjectURL(analyzed.thumbnailBlob),
+              frameNotice: undefined,
+              backgroundRemoved: true,
+            };
+            setSources(sourcesRef.current.map((source) => (source.id === target.id ? updated : source)));
+            setStatus(target.id, 'ready');
+            succeeded += 1;
+          } catch (error) {
+            if (!mountedRef.current) return;
+            if (sourceExists(target.id)) {
+              setStatus(target.id, 'failed');
+              setError(target.id, toUserMessage(error));
+            }
+            failed += 1;
+          } finally {
+            done += 1;
+          }
+        }
+      } finally {
+        backgroundRunningRef.current = false;
+        if (mountedRef.current) setBackgroundJob(EMPTY_BACKGROUND_JOB);
+      }
+
+      if (!mountedRef.current) return;
+
+      if (succeeded > 0 && !getOutputFormat(settingsRef.current.format).transparency) {
+        updateSettings({ format: 'png' });
+        notify('Output format switched to PNG to keep the transparent background.', 'info');
+      }
+
+      if (failed > 0) {
+        notify(
+          `Background removed from ${succeeded} image${succeeded === 1 ? '' : 's'}, ${failed} failed.`,
+          succeeded > 0 ? 'warning' : 'error',
+        );
+      } else if (succeeded > 0) {
+        notify(
+          `Background removed from ${succeeded} image${succeeded === 1 ? '' : 's'}.`,
+          'success',
+        );
+      }
+    },
+    [
+      batch.running,
+      cancelAutoTimer,
+      markOrphanedProcessingReady,
+      notify,
+      removeResult,
+      setError,
+      setSources,
+      setStatus,
+      sourceExists,
+      updateSettings,
+      zip.running,
+    ],
+  );
+
+  const cancelBackgroundJob = useCallback(() => {
+    if (!backgroundRunningRef.current) return;
+    backgroundCancelRef.current = true;
+    notify('Stopping after the current image finishes.', 'info');
+  }, [notify]);
+
   const downloadResult = useCallback((result: ProcessedResult) => {
     triggerDownload(result.url, result.filename);
   }, []);
@@ -881,6 +1029,9 @@ export function useImageWorkspace(notify: Notify) {
     capabilitiesReady,
     batch,
     zip,
+    backgroundJob,
+    removeBackgrounds,
+    cancelBackgroundJob,
     updateSettings,
     resetSettings,
     addFiles,
